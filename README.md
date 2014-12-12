@@ -21,10 +21,11 @@ The current version `v` is `1.0.0-SNAPSHOT`
 The graph is embodied by the `Topology[V, E]` type where `V` is the opaque vertex type, and `E` is the directed edge type that implements the `Topology.Edge` trait, pointing to the source and target vertex. For example:
 
 ```scala
-    import de.sciss.topology._
+    import de.sciss.topology.Topology
 
     case class Vertex(label: String)
-    case class Edge(sourceVertex: Vertex, targetVertex: Vertex) extends Topology.Edge[Vertex]
+    case class Edge(sourceVertex: Vertex, targetVertex: Vertex)
+      extends Topology.Edge[Vertex]
 ```
 
 Then a new empty graph is constructed:
@@ -41,9 +42,11 @@ The graph has methods `addVertex`, `removeVertex`, `addEdge` and `removeEdge` to
     val t1 = t0.addVertex(Vertex("foo"))
     val t2 = t1.addVertex(Vertex("bar"))
 
-    val Success((t3, m0)) = t2.addEdge(Edge(Vertex("foo"), Vertex("bar")))  // m0 contains the movement
+    // m0 will contain the movement
+    val Success((t3, m0)) = t2.addEdge(Edge(Vertex("foo"), Vertex("bar")))
     t3.addEdge(Edge(Vertex("bar"), Vertex("foo")))  // this is a failure
     val t4 = t3.removeEdge(Edge(Vertex("foo"), Vertex("bar")))
-    val Success((t5, m1)) = t4.addEdge(Edge(Vertex("bar"), Vertex("foo")))  // now it's possible; m1 contains movement
+    // now it's possible. m1 will contain the movement
+    val Success((t5, m1)) = t4.addEdge(Edge(Vertex("bar"), Vertex("foo")))
     val t6 = t5.removeVertex(Vertex("bar"))
 ```
