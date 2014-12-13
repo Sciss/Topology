@@ -103,8 +103,9 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
     val newEdgeMap: Map[V, Set[E]] = edgeMap + (source -> (edgeMap.getOrElse(source, Set.empty) + e))
     val newEdgeSet = edges + e
 
+    if (loBound == upBound) Failure(new CycleDetected)
     // dealing with unconnected elements
-    if (upBound < unconnected) { // first edge for source
+    else if (upBound < unconnected) { // first edge for source
       if (loBound < unconnected) { // first edge for target
         val min         = math.min(upBound, loBound)
         val max         = math.max(upBound, loBound)
@@ -126,7 +127,7 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
       // regular algorithm
     } else if (loBound > upBound) {
       Success((copy(vertices, newEdgeSet)(unconnected, newEdgeMap), None))
-    } else if (loBound < upBound) {
+    } else /* if (loBound < upBound) */ {
       val visited = MSet.empty[V]
       if (!discovery(visited, newEdgeMap, target, upBound)) {
         Failure(new CycleDetected)  // Cycle --> Abort
@@ -135,9 +136,6 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
         val newUnCon                = if (loBound < unconnected) unconnected - 1 else unconnected
         Success((copy(newVertices, newEdgeSet)(newUnCon, newEdgeMap), Some(MoveAfter(source, affected))))
       }
-    } else {
-      // loBound == upBound
-      Failure(new CycleDetected)
     }
   }
 
@@ -154,11 +152,13 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
     val upBound	   = vertices.indexOf(source)
     val loBound	   = vertices.indexOf(target)
 
-    (upBound >= 0 && loBound >= 0) && ((upBound < unconnected) || (loBound > upBound) || ((loBound < upBound) && {
-      val visited = MSet.empty[V]
-      val newEdgeMap: Map[V, Set[E]] = edgeMap + (source -> (edgeMap.getOrElse(source, Set.empty) + e))
-      discovery(visited, newEdgeMap, target, upBound)
-    }))
+    (upBound >= 0 && loBound >= 0) && (upBound != loBound) && (
+      (upBound < unconnected) || (loBound > upBound) || {
+        val visited = MSet.empty[V]
+        val newEdgeMap: Map[V, Set[E]] = edgeMap + (source -> (edgeMap.getOrElse(source, Set.empty) + e))
+        discovery(visited, newEdgeMap, target, upBound)
+      }
+    )
   }
 
   /** Removes the edge from the topology. If the edge is not contained in the
