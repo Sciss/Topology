@@ -14,7 +14,7 @@ To use this project as a library, use the following artifact:
 
     libraryDependencies += "de.sciss" %% "topology" % v
 
-The current version `v` is `1.0.0-SNAPSHOT`
+The current version `v` is `"1.0.0"`
 
 ## getting started
 
