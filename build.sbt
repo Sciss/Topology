@@ -1,24 +1,18 @@
 name               := "Topology"
 
-version            := "1.0.0"
+version            := "1.0.1-SNAPSHOT"
 
 organization       := "de.sciss"
 
-scalaVersion       := "2.11.4"
+scalaVersion       := "2.11.6"
 
-crossScalaVersions := Seq("2.11.4", "2.10.4")
+crossScalaVersions := Seq("2.11.6", "2.10.5")
 
 description        := "A dynamic directed acyclic graph library"
 
 homepage           := Some(url("https://github.com/Sciss/" + name.value))
 
 licenses           := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt"))
-
-//lazy val scalaTestVersion = "2.2.2"
-//
-//libraryDependencies ++= Seq(
-//  "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
-//)
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture")
 

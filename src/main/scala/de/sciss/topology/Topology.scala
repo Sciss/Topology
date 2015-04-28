@@ -55,7 +55,7 @@ object Topology {
   * @param  vertices      the vertices in the structure
   * @param  edges         a set of edges between the vertices
   * @param  unconnected   the number of unconnected vertices (the leading elements in `vertices`)
-  * @param  edgeMap       allows lookup of edges via vertex keys
+  * @param  edgeMap       allows lookup of edges via source vertex keys
   *
   * @tparam V             vertex type
   * @tparam E             edge type
@@ -181,8 +181,11 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
     copy(v +: vertices)(unconnected + 1, edgeMap)
   }
 
-  /** Removes a vertex and all associated edges. If the vertex is not
+  /** Removes a vertex and all associated '''outgoing''' edges. If the vertex is not
     * contained in the structure, returns the unmodified topology.
+    *
+    * '''Note:''' incoming edges pointing to the removed vertex are not detected and removed.
+    * this is the responsibility of the caller.
     */
   def removeVertex(v: V): Topology[V, E] = {
     val idx = vertices.indexOf(v)
