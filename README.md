@@ -1,5 +1,9 @@
 # Topology
 
+[![Flattr this](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=sciss&url=https%3A%2F%2Fgithub.com%2FSciss%2FTopology&title=Topology%20Library&language=Scala&tags=github&category=software)
+[![Build Status](https://travis-ci.org/Sciss/Topology.svg?branch=master)](https://travis-ci.org/Sciss/Topology)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.11)
+
 ## statement
 
 Topology is a library for the Scala programming language that provides an online data structure for a directed acyclic graph. It is (C)opyright 2010&ndash;2014 by Hanns Holger Rutz. All rights reserved. This project is released under the [GNU Lesser General Public License](http://github.com/Sciss/Topology/blob/master/LICENSE) v2.1+ and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`
