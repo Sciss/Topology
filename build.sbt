@@ -1,20 +1,21 @@
-name               := "Topology"
+lazy val baseName  = "Topology"
+lazy val baseNameL = baseName.toLowerCase
 
-version            := "1.0.1-SNAPSHOT"
+lazy val projectVersion = "1.0.1"
+lazy val mimaVersion    = "1.0.0"
 
+name               := baseName
+version            := projectVersion
 organization       := "de.sciss"
-
-scalaVersion       := "2.11.7"
-
-crossScalaVersions := Seq("2.11.7", "2.10.5")
-
+scalaVersion       := "2.11.8"
+crossScalaVersions := Seq("2.12.1", "2.11.8", "2.10.6")
 description        := "A dynamic directed acyclic graph library"
-
-homepage           := Some(url("https://github.com/Sciss/" + name.value))
-
+homepage           := Some(url(s"https://github.com/Sciss/${name.value}"))
 licenses           := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt"))
 
-scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture")
+mimaPreviousArtifacts := Set("de.sciss" %% baseNameL % mimaVersion)
+
+scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint")
 
 // ---- console ----
 

@@ -6,11 +6,11 @@
 
 ## statement
 
-Topology is a library for the Scala programming language that provides an online data structure for a directed acyclic graph. It is (C)opyright 2010&ndash;2014 by Hanns Holger Rutz. All rights reserved. This project is released under the [GNU Lesser General Public License](http://github.com/Sciss/Topology/blob/master/LICENSE) v2.1+ and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`
+Topology is a library for the Scala programming language that provides an online data structure for a directed acyclic graph. It is (C)opyright 2010&ndash;2017 by Hanns Holger Rutz. All rights reserved. This project is released under the [GNU Lesser General Public License](http://github.com/Sciss/Topology/blob/master/LICENSE) v2.1+ and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`
 
 ## building
 
-This project builds with sbt 0.13 against Scala 2.11, 2.10.
+This project builds with sbt 0.13 against Scala 2.12, 2.11, 2.10.
 
 ## linking
 
@@ -18,7 +18,7 @@ To use this project as a library, use the following artifact:
 
     libraryDependencies += "de.sciss" %% "topology" % v
 
-The current version `v` is `"1.0.0"`
+The current version `v` is `"1.0.1"`
 
 ## getting started
 
