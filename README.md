@@ -9,7 +9,7 @@ Topology is a library for the Scala programming language that provides an online
 
 ## building
 
-This project builds with sbt 0.13 against Scala 2.12, 2.11, 2.10.
+This project builds with sbt against Scala 2.12, 2.11.
 
 ## linking
 
@@ -17,7 +17,7 @@ To use this project as a library, use the following artifact:
 
     libraryDependencies += "de.sciss" %% "topology" % v
 
-The current version `v` is `"1.0.1"`
+The current version `v` is `"1.1.0"`
 
 ## getting started
 

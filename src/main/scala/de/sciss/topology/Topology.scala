@@ -2,7 +2,7 @@
  *  Topology.scala
  *  (Topology)
  *
- *  Copyright (c) 2010-2014 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2010-2017 Hanns Holger Rutz. All rights reserved.
  *
  *	This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -13,10 +13,10 @@
 
 package de.sciss.topology
 
+import scala.Vector.{empty => emptySeq}
 import scala.collection.immutable.{IndexedSeq => Vec}
 import scala.collection.mutable.{Set => MSet, Stack => MStack}
-import scala.util.{Success, Failure, Try}
-import Vector.{empty => emptySeq}
+import scala.util.{Failure, Success, Try}
 
 object Topology {
   /** Creates an empty topology with no vertices or edges.
@@ -24,12 +24,7 @@ object Topology {
     * @tparam V   vertex type
     * @tparam E   edge type
     */
-  def empty[V, E <: Edge[V]] = apply[V, E](emptySeq, Set.empty)(0, Map.empty)
-
-  trait Edge[+V] {
-    def sourceVertex: V
-    def targetVertex: V
-  }
+  def empty[V, E](implicit edgeView: EdgeView[V, E]): Topology[V, E] = apply[V, E](emptySeq, Set.empty)(0, Map.empty)
 
   sealed trait Move[V] {
     def reference: V
@@ -60,11 +55,13 @@ object Topology {
   * @tparam V             vertex type
   * @tparam E             edge type
   */
-final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], edges: Set[E])
-                                                            (val unconnected: Int, val edgeMap: Map[V, Set[E]])
+final case class Topology[V, E] private (vertices: Vec[V], edges: Set[E])
+                                        (val unconnected: Int, val edgeMap: Map[V, Set[E]])
+                                        (implicit edgeView: EdgeView[V, E])
   extends Ordering[V] {
 
-  import de.sciss.topology.Topology.{Move, CycleDetected, MoveAfter, MoveBefore}
+  import de.sciss.topology.Topology.{CycleDetected, Move, MoveAfter, MoveBefore}
+  import edgeView._
 
   private type T = Topology[V, E]
 
@@ -94,8 +91,8 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
     *           moved _before_ the reference
     */
   def addEdge(e: E): Try[(T, Option[Move[V]])] = {
-    val source	   = e.sourceVertex
-    val target	   = e.targetVertex
+    val source	   = sourceVertex(e)
+    val target	   = targetVertex(e)
     val upBound	   = vertices.indexOf(source)
     if (upBound < 0) return Failure(new IllegalArgumentException(s"Source vertex $source not found"))
     val loBound	   = vertices.indexOf(target)
@@ -147,10 +144,10 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
     *           `Failure`
     */
   def canAddEdge(e: E): Boolean = {
-    val source	   = e.sourceVertex
-    val target	   = e.targetVertex
-    val upBound	   = vertices.indexOf(source)
-    val loBound	   = vertices.indexOf(target)
+    val source  = sourceVertex(e)
+    val target  = targetVertex(e)
+    val upBound = vertices.indexOf(source)
+    val loBound = vertices.indexOf(target)
 
     (upBound >= 0 && loBound >= 0) && (upBound != loBound) && (
       (upBound < unconnected) || (loBound > upBound) || {
@@ -166,7 +163,7 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
     */
   def removeEdge(e: E): Topology[V, E] = {
     if (edges.contains(e)) {
-      val source  = e.sourceVertex
+      val source  = sourceVertex(e)
       val newEMV  = edgeMap(source) - e
       val newEM   = if (newEMV.isEmpty) edgeMap - source else edgeMap + (source -> newEMV)
       copy(edges = edges - e)(unconnected, newEM)
@@ -213,7 +210,7 @@ final case class Topology[V, E <: Topology.Edge[V]] private (vertices: Vec[V], e
     while (targets.nonEmpty) {
       val v           = targets.pop()
       visited        += v
-      val moreTargets = newEdgeMap.getOrElse(v, Set.empty).map(_.targetVertex)
+      val moreTargets = newEdgeMap.getOrElse(v, Set.empty).map(targetVertex)
       val grouped     = moreTargets.groupBy { t =>
         val vIdx = vertices.indexOf(t)
         if (vIdx < upBound) -1 else if (vIdx > upBound) 1 else 0
