@@ -13,6 +13,17 @@
 
 package de.sciss.topology
 
+import scala.language.implicitConversions
+
+object Edge {
+  def apply[V](from: V, to: V): Edge[V] = Impl(from, to)
+
+  implicit def fromTuple[V](tup: (V, V)): Edge[V] = apply(tup._1, tup._2)
+
+  private final case class Impl[V](sourceVertex: V, targetVertex: V) extends Edge[V] {
+    override def productPrefix = "Edge"
+  }
+}
 trait Edge[+V] {
   def sourceVertex: V
   def targetVertex: V

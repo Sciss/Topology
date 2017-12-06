@@ -1,8 +1,10 @@
-lazy val baseName  = "Topology"
-lazy val baseNameL = baseName.toLowerCase
+lazy val baseName         = "Topology"
+lazy val baseNameL        = baseName.toLowerCase
 
-lazy val projectVersion = "1.1.0-SNAPSHOT"
-lazy val mimaVersion    = "1.1.0"
+lazy val projectVersion   = "1.1.0-SNAPSHOT"
+lazy val mimaVersion      = "1.1.0"
+
+lazy val scalaTestVersion = "3.0.4"
 
 name               := baseName
 version            := projectVersion
@@ -17,13 +19,15 @@ mimaPreviousArtifacts := Set("de.sciss" %% baseNameL % mimaVersion)
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint")
 
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
+)
+
 // ---- console ----
 
 initialCommands in console :=
 """import de.sciss.topology._
   |import scala.util.{Try, Success, Failure}
-  |case class Vertex(label: String)
-  |case class Edge(sourceVertex: Vertex, targetVertex: Vertex) extends Topology.Edge[Vertex]
   |""".stripMargin
 
 // ---- publishing ----
