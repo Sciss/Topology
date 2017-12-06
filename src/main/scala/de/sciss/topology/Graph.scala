@@ -14,11 +14,30 @@
 package de.sciss.topology
 
 import scala.annotation.tailrec
+import scala.collection.SeqLike
 import scala.collection.generic.CanBuildFrom
 
 /** This object contains utility methods for constructing and querying graphs. */
 object Graph {
   type EdgeMap[V, E] = Map[V, Set[E]]
+
+  /** Collects as a `Set` all vertices references through a given collection of edges. */
+  def mkVertexSet[V, E](edges: Iterable[E])(implicit edgeView: EdgeView[V, E]): Set[V] = {
+    import edgeView._
+    edges.iterator.flatMap(e => sourceVertex(e) :: targetVertex(e) :: Nil).toSet
+  }
+
+  /** Collects as a all vertices references through a given collection of edges.
+    * The result is distinct, i.e. each vertex appears only once.
+    */
+  def mkVertexSeq[V, E, To <: SeqLike[V, To]](edges: Iterable[E])(implicit edgeView: EdgeView[V, E],
+                                                                  cbf: CanBuildFrom[Nothing, V, To]): To = {
+    import edgeView._
+    val flat = edges.iterator.flatMap(e => sourceVertex(e) :: targetVertex(e) :: Nil)
+    val b = cbf()
+    flat.foreach(b += _)
+    b.result().distinct
+  }
 
   /** Creates a map from vertices to outgoing (target) edges,
     * including only edges for which a vertex is source.

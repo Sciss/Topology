@@ -16,7 +16,6 @@ package de.sciss.topology
 import de.sciss.topology.UnionFind.Node
 
 import scala.annotation.tailrec
-import scala.collection.breakOut
 
 // this is based on code by Rafael O. Torres, which
 // however was wrong.
@@ -36,9 +35,8 @@ object UnionFind {
   }
 
   def vertexIndexMap[V, E](edges: Iterable[E])(implicit ord: Ordering[V], edgeView: EdgeView[V, E]): Map[V, Int] = {
-    import edgeView._
-    val flat  : List[V] = edges.flatMap(edge => List(sourceVertex(edge), targetVertex(edge)))(breakOut)
-    val sorted: List[V] = flat.distinct.sorted
+    val distinct: List[V] = Graph.mkVertexSeq(edges)
+    val sorted  : List[V] = distinct.sorted
     sorted.iterator.zipWithIndex.toMap
   }
 }
