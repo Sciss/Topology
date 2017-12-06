@@ -69,23 +69,45 @@ object Graph {
                                                   cbf: CanBuildFrom[From, E, To]): To =
     Kruskal[V, E, From, To](sorted)
 
-  /** Uses depth-first-search to construct a path from `source` to `sink`.
+  /** Uses depth-first-search in a directed graph to construct a path from `source` to `sink`.
     * Requires that the graph has no cycles.
     * Returns and empty sequence if no path is found.
     *
     * @param  source  the vertex to start with; if a path is found, this will be its first element
-    * @param  sink    the vertex to end with; if a path is found ,this will be its last element
+    * @param  sink    the vertex to end with; if a path is found, this will be its last element
     * @param  map     an map from vertices to the set of their outgoing (target) edges. It is possible to pass in
     *                 a "full" bi-directional edge-map, including in the set also incoming (source) edges. These
     *                 will be automatically ignored.
     */
-  def findPath[V, E, To](source: V, sink: V, map: Map[V, Set[E]])(implicit edgeView: EdgeView[V, E],
-                                                                  cbf: CanBuildFrom[Nothing, V, To]): To = {
+  def findDirectedPath[V, E, To](source: V, sink: V, map: Map[V, Set[E]])(implicit edgeView: EdgeView[V, E],
+                                                                          cbf: CanBuildFrom[Nothing, V, To]): To =
+    findPath[V, E, To](source, sink, map, directed = true)
+
+  def findUndirectedPath[V, E, To](source: V, sink: V, map: Map[V, Set[E]])(implicit edgeView: EdgeView[V, E],
+                                                                            cbf: CanBuildFrom[Nothing, V, To]): To =
+    findPath[V, E, To](source, sink, map, directed = false)
+
+  /** Uses depth-first-search to construct a path from `source` to `sink`.
+    * Returns and empty sequence if no path is found.
+    *
+    * @param  source    the vertex to start with; if a path is found, this will be its first element
+    * @param  sink      the vertex to end with; if a path is found, this will be its last element
+    * @param  map       an map from vertices to the set of their outgoing (target) and incoming (source) edges.
+    *                   If `directed` is `true`, it suffices to provide only the set of target edges. If
+    *                   `directed` is `true` and a "full" bi-directional edge-map is used, this is automatically
+    *                   detected.
+    * @param  directed  if `true`, consider the graph directed, and only follow the edges from sources to
+    *                   targets. If `false`, allow movement in both directions.
+    *                   Note that if the graph is not directed, the returned path is not guaranteed to be unique or
+    *                   the shortest possible path.
+    */
+  def findPath[V, E, To](source: V, sink: V, map: Map[V, Set[E]], directed: Boolean)
+                        (implicit edgeView: EdgeView[V, E], cbf: CanBuildFrom[Nothing, V, To]): To = {
     import edgeView._
     val b = cbf()
 
     @tailrec
-    def loop(back: List[(V, Set[E])], rem: Map[V, Set[E]]): Unit =
+    def loop(back: List[(V, Set[E])], seen: Set[V], rem: Map[V, Set[E]]): Unit =
       back match {
         case (v, edges) :: tail =>
           if (v == sink) {
@@ -95,28 +117,34 @@ object Graph {
           } else {
             var backNew = tail
             var remNew  = rem
+            var seenNew = seen - v
             var vTail   = edges
             var done    = false
             while (vTail.nonEmpty && !done) {
               val e     = vTail.head
               vTail    -= e
               val start = sourceVertex(e)
-              if (v == start) { // make sure we only pick edges for which `v` is the source
-                val target  = targetVertex(e)
-                val tTail   = rem(target) - e
-                remNew      = if (tTail.isEmpty) rem - target else rem + (target -> tTail)
-                backNew     = (target -> tTail) :: (v -> vTail) :: tail
-                done        = true
+              val end   = targetVertex(e)
+              val isStart = v == start
+              if (isStart || !directed) {
+                val target = if (isStart) end else start
+                if (!seen.contains(target)) {
+                  val tTail = rem(target) - e
+                  remNew    = if (tTail.isEmpty) rem - target else rem + (target -> tTail)
+                  backNew   = (target -> tTail) :: (v -> vTail) :: tail
+                  seenNew   = seen + target   // i.e. seenNew + v + target
+                  done      = true
+                }
               }
             }
-            loop(backNew, remNew)
+            loop(backNew, seenNew, remNew)
           }
 
         case _ =>
       }
 
     map.get(source) match {
-      case Some(sEdges) => loop((source -> sEdges) :: Nil, map)
+      case Some(sEdges) => loop((source -> sEdges) :: Nil, Set.empty + source, map)
       case None         =>
     }
     b.result()

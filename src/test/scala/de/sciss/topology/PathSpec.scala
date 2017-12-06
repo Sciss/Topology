@@ -7,6 +7,7 @@ class PathSpec extends FlatSpec {
   type V = Int
   type E = Edge[V]
 
+  // cf. https://en.wikipedia.org/wiki/Directed_graph#/media/File:Directed_acyclic_graph_2.svg
   val edges: Seq[E] = Seq(
      3 ->  8,
      3 -> 10,
@@ -61,25 +62,43 @@ class PathSpec extends FlatSpec {
     assert(mapBi === expectedBi)
   }
 
-  it should "produce correct paths with DFS" in {
-    val path1 = Graph.findPath(3, 2, mapTgt)
+  it should "produce correct paths with directed DFS" in {
+    val path1 = Graph.findDirectedPath(3, 2, mapTgt)
     assert(path1 === Nil)
-    val path1b = Graph.findPath(3, 2, mapBi)
+    val path1b = Graph.findDirectedPath(3, 2, mapBi)
     assert(path1b === Nil)
 
-    val path2 = Graph.findPath(7, 2, mapTgt)
+    val path2 = Graph.findDirectedPath(7, 2, mapTgt)
     assert(path2 === List(7, 11, 2))
-    val path2b = Graph.findPath(7, 2, mapBi)
+    val path2b = Graph.findDirectedPath(7, 2, mapBi)
     assert(path2b === List(7, 11, 2))
 
-    val path3 = Graph.findPath(5, 10, mapTgt)
+    val path3 = Graph.findDirectedPath(5, 10, mapTgt)
     assert(path3 === List(5, 11, 10))
-    val path3b = Graph.findPath(5, 10, mapBi)
+    val path3b = Graph.findDirectedPath(5, 10, mapBi)
     assert(path3b === List(5, 11, 10))
 
-    val path4 = Graph.findPath(10, 5, mapTgt)
+    val path4 = Graph.findDirectedPath(10, 5, mapTgt)
     assert(path4 === Nil)
-    val path4b = Graph.findPath(10, 5, mapBi)
+    val path4b = Graph.findDirectedPath(10, 5, mapBi)
     assert(path4b === Nil)
+  }
+
+  it should "produce correct paths with undirected DFS" in {
+    val path1 = Graph.findUndirectedPath(3, 2, mapBi)
+//    println(s"path1: $path1")
+    assert(path1 === List(3, 8, 7, 11, 2) || path1 === List(3, 8, 9, 11, 2))
+
+    val path2 = Graph.findUndirectedPath(7, 2, mapBi)
+//    println(s"path2: $path2")
+    assert(path2 === List(7, 11, 2) || path2 === List(7, 8, 9, 11, 2))
+
+    val path3 = Graph.findUndirectedPath(5, 10, mapBi)
+//    println(s"path3: $path3")
+    assert(path3 === List(5, 11, 10) || path3 === List(5, 11, 7, 8, 3, 10))
+
+    val path4 = Graph.findUndirectedPath(10, 5, mapBi)
+//    println(s"path4: $path4")
+    assert(path4 === List(10, 11, 5) || path4 === List(10, 3, 8, 7, 11, 5))
   }
 }
