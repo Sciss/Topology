@@ -1,7 +1,7 @@
 lazy val baseName         = "Topology"
 lazy val baseNameL        = baseName.toLowerCase
 
-lazy val projectVersion   = "1.1.0-SNAPSHOT"
+lazy val projectVersion   = "1.1.0"
 lazy val mimaVersion      = "1.1.0"
 
 lazy val scalaTestVersion = "3.0.4"

@@ -17,7 +17,7 @@ class PathSpec extends FlatSpec {
      8 ->  9,
     11 ->  2,
     11 ->  9,
-    11 -> 10,
+    11 -> 10
   )
 
   val mapTgt: EdgeMap[V, E] = Graph.mkTargetEdgeMap[V, E](edges)
@@ -33,7 +33,7 @@ class PathSpec extends FlatSpec {
        8 -> Set[E](8->9),
        9 -> Set[E](),
       10 -> Set[E](),
-      11 -> Set[E](11->2, 11->9, 11->10),
+      11 -> Set[E](11->2, 11->9, 11->10)
     )
     assert(mapTgt === expectedTgt)
 
@@ -45,7 +45,7 @@ class PathSpec extends FlatSpec {
        8 -> Set[E](3->8, 7->8),
        9 -> Set[E](8->9, 11->9),
       10 -> Set[E](3->10, 11->10),
-      11 -> Set[E](5->11, 7->11),
+      11 -> Set[E](5->11, 7->11)
     )
     assert(mapSrc === expectedSrc)
 
@@ -57,7 +57,7 @@ class PathSpec extends FlatSpec {
        8 -> Set[E](3->8, 7->8, 8->9),
        9 -> Set[E](8->9, 11->9),
       10 -> Set[E](3->10, 11->10),
-      11 -> Set[E](5->11, 7->11, 11->2, 11->9, 11->10),
+      11 -> Set[E](5->11, 7->11, 11->2, 11->9, 11->10)
     )
     assert(mapBi === expectedBi)
   }
