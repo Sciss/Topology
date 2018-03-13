@@ -4,12 +4,12 @@ lazy val baseNameL        = baseName.toLowerCase
 lazy val projectVersion   = "1.1.0"
 lazy val mimaVersion      = "1.1.0"
 
-lazy val scalaTestVersion = "3.0.4"
+lazy val scalaTestVersion = "3.0.5-M1"
 
 name               := baseName
 version            := projectVersion
 organization       := "de.sciss"
-scalaVersion       := "2.12.4"
+scalaVersion       := "2.13.0-M3" // "2.12.4"
 crossScalaVersions := Seq("2.12.4", "2.11.12")
 description        := "A dynamic directed acyclic graph library"
 homepage           := Some(url(s"https://github.com/Sciss/${name.value}"))
