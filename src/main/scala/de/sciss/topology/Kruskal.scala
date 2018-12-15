@@ -15,6 +15,8 @@ package de.sciss.topology
 
 import scala.collection.generic.CanBuildFrom
 
+import scala.collection.{Seq => SSeq}
+
 object Kruskal {
   /** Builds a minimum-spanning-tree using Kruskal's method.
     *
@@ -23,7 +25,7 @@ object Kruskal {
     * @param edgeView edge view type class
     * @return         the subset of edges forming the MST
     */
-  def apply[V, E, From <: Seq[E], To](sorted: From)(implicit ord: Ordering[V], edgeView: EdgeView[V, E],
+  def apply[V, E, From <: SSeq[E], To](sorted: From)(implicit ord: Ordering[V], edgeView: EdgeView[V, E],
                                                     cbf: CanBuildFrom[From, E, To]): To = {
     val b   = cbf(sorted)
     var uf  = UnionFind[V, E](sorted)
