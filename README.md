@@ -6,8 +6,8 @@
 ## statement
 
 Topology is a library for the Scala programming language that provides data structures and algorithms for
-graphs. It is (C)opyright 2010&ndash;2017 by Hanns Holger Rutz. All rights reserved.  This project is released under 
-the [GNU Lesser General Public License](http://github.com/Sciss/Topology/blob/master/LICENSE) v2.1+ 
+graphs. It is (C)opyright 2010&ndash;2018 by Hanns Holger Rutz. All rights reserved.  This project is released under 
+the [GNU Lesser General Public License](https://git.iem.at/sciss/Topology/raw/master/LICENSE) v2.1+ 
 and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`
 
 ## building
@@ -20,7 +20,7 @@ To use this project as a library, use the following artifact:
 
     libraryDependencies += "de.sciss" %% "topology" % v
 
-The current version `v` is `"1.1.0"`
+The current version `v` is `"1.1.1"`
 
 ## getting started
 
