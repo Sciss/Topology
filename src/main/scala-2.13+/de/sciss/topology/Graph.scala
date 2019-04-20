@@ -2,7 +2,7 @@
  *  Graph.scala
  *  (Topology)
  *
- *  Copyright (c) 2010-2017 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2010-2019 Hanns Holger Rutz. All rights reserved.
  *
  *	This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -14,8 +14,7 @@
 package de.sciss.topology
 
 import scala.annotation.tailrec
-import scala.collection.SeqLike
-import scala.collection.generic.CanBuildFrom
+import scala.collection.{BuildFrom, Factory, SeqLike, Seq => SSeq}
 
 /** This object contains utility methods for constructing and querying graphs. */
 object Graph {
@@ -31,10 +30,10 @@ object Graph {
     * The result is distinct, i.e. each vertex appears only once.
     */
   def mkVertexSeq[V, E, To <: SeqLike[V, To]](edges: Iterable[E])(implicit edgeView: EdgeView[V, E],
-                                                                  cbf: CanBuildFrom[Nothing, V, To]): To = {
+                                                                  cbf: Factory[V, To]): To = {
     import edgeView._
     val flat = edges.iterator.flatMap(e => sourceVertex(e) :: targetVertex(e) :: Nil)
-    val b = cbf()
+    val b = cbf.newBuilder
     flat.foreach(b += _)
     b.result().distinct
   }
@@ -84,8 +83,8 @@ object Graph {
   }
 
   /** Calculates minimum-spanning-tree, by simply calling `Kruskal.apply`. */
-  def mst[V, E, From <: Seq[E], To](sorted: From)(implicit ord: Ordering[V], edgeView: EdgeView[V, E],
-                                                  cbf: CanBuildFrom[From, E, To]): To =
+  def mst[V, E, From <: SSeq[E], To](sorted: From)(implicit ord: Ordering[V], edgeView: EdgeView[V, E],
+                                                  cbf: BuildFrom[From, E, To]): To =
     Kruskal[V, E, From, To](sorted)
 
   /** Uses depth-first-search in a directed graph to construct a path from `source` to `sink`.
@@ -99,11 +98,11 @@ object Graph {
     *                 will be automatically ignored.
     */
   def findDirectedPath[V, E, To](source: V, sink: V, map: Map[V, Set[E]])(implicit edgeView: EdgeView[V, E],
-                                                                          cbf: CanBuildFrom[Nothing, V, To]): To =
+                                                                          cbf: Factory[V, To]): To =
     findPath[V, E, To](source, sink, map, directed = true)
 
   def findUndirectedPath[V, E, To](source: V, sink: V, map: Map[V, Set[E]])(implicit edgeView: EdgeView[V, E],
-                                                                            cbf: CanBuildFrom[Nothing, V, To]): To =
+                                                                            cbf: Factory[V, To]): To =
     findPath[V, E, To](source, sink, map, directed = false)
 
   /** Uses depth-first-search to construct a path from `source` to `sink`.
@@ -121,9 +120,9 @@ object Graph {
     *                   the shortest possible path.
     */
   def findPath[V, E, To](source: V, sink: V, map: Map[V, Set[E]], directed: Boolean)
-                        (implicit edgeView: EdgeView[V, E], cbf: CanBuildFrom[Nothing, V, To]): To = {
+                        (implicit edgeView: EdgeView[V, E], cbf: Factory[V, To]): To = {
     import edgeView._
-    val b = cbf()
+    val b = cbf.newBuilder
 
     @tailrec
     def loop(back: List[(V, Set[E])], seen: Set[V], rem: Map[V, Set[E]]): Unit =

@@ -1,9 +1,9 @@
 package de.sciss.topology
 
 import de.sciss.topology.Graph.EdgeMap
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class PathSpec extends FlatSpec {
+class PathSpec extends AnyFlatSpec {
   type V = Int
   type E = Edge[V]
 
@@ -95,7 +95,7 @@ class PathSpec extends FlatSpec {
 
     val path3 = Graph.findUndirectedPath(5, 10, mapBi)
 //    println(s"path3: $path3")
-    assert(path3 === List(5, 11, 10) || path3 === List(5, 11, 7, 8, 3, 10))
+    assert(path3 === List(5, 11, 10) || path3 === List(5, 11, 7, 8, 3, 10) || path3 === List(5, 11, 9, 8, 3, 10))
 
     val path4 = Graph.findUndirectedPath(10, 5, mapBi)
 //    println(s"path4: $path4")
