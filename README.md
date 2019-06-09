@@ -1,7 +1,7 @@
 # Topology
 
 [![Build Status](https://travis-ci.org/Sciss/Topology.svg?branch=master)](https://travis-ci.org/Sciss/Topology)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.12)
 
 ## statement
 
@@ -12,7 +12,7 @@ and comes with absolutely no warranties. To contact the author, send an email to
 
 ## building
 
-This project builds with sbt against Scala 2.12, 2.11.
+This project builds with sbt against Scala 2.13, 2.12, 2.11.
 
 ## linking
 

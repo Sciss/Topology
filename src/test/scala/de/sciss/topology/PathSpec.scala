@@ -1,9 +1,9 @@
 package de.sciss.topology
 
 import de.sciss.topology.Graph.EdgeMap
-import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.FlatSpec
 
-class PathSpec extends AnyFlatSpec {
+class PathSpec extends FlatSpec {
   type V = Int
   type E = Edge[V]
 
