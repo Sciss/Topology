@@ -1,18 +1,18 @@
 # Topology
 
-[![Build Status](https://travis-ci.org/Sciss/Topology.svg?branch=master)](https://travis-ci.org/Sciss/Topology)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.12)
+[![Build Status](https://travis-ci.org/Sciss/Topology.svg?branch=main)](https://travis-ci.org/Sciss/Topology)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.13)
 
 ## statement
 
 Topology is a library for the Scala programming language that provides data structures and algorithms for
-graphs. It is (C)opyright 2010&ndash;2019 by Hanns Holger Rutz. All rights reserved.  This project is released under 
-the [GNU Lesser General Public License](https://git.iem.at/sciss/Topology/raw/master/LICENSE) v2.1+ 
-and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`
+graphs. It is (C)opyright 2010&ndash;2020 by Hanns Holger Rutz. All rights reserved.  This project is released under 
+the [GNU Lesser General Public License](https://git.iem.at/sciss/Topology/raw/main/LICENSE) v2.1+ 
+and comes with absolutely no warranties. To contact the author, send an e-mail to `contact at sciss.de`
 
 ## building
 
-This project builds with sbt against Scala 2.13, 2.12, 2.11.
+This project builds with sbt against Scala 2.13, 2.12. The last version to support Scala 2.11 was v1.1.2.
 
 ## linking
 
@@ -20,12 +20,12 @@ To use this project as a library, use the following artifact:
 
     libraryDependencies += "de.sciss" %% "topology" % v
 
-The current version `v` is `"1.1.2"`
+The current version `v` is `"1.1.3"`
 
 ## getting started
 
 Instead of having a fixed vertex or edge type, most API uses an `EdgeView` type-class to obtain views
-from an opaque edge type to the vertices of th edge. There is a simply type `Edge` that can be used
+from an opaque edge type to the vertices of th edge. There is a simple type `Edge` that can be used
 to generate plain edges from two vertices.
 
 ### Topology

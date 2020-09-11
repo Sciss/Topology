@@ -1,12 +1,12 @@
 lazy val baseName         = "Topology"
 lazy val baseNameL        = baseName.toLowerCase
 
-lazy val projectVersion   = "1.1.2"
+lazy val projectVersion   = "1.1.3"
 lazy val mimaVersion      = "1.1.0"
 
 lazy val deps = new {
   val test = new {
-    val scalaTest = "3.0.8-RC5"
+    val scalaTest = "3.2.2"
   }
 }
 
@@ -21,6 +21,7 @@ lazy val root = project.in(file("."))
       val sourceDir = (sourceDirectory in Compile).value
       CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, n)) if n >= 13 => sourceDir / "scala-2.13+"
+        case Some((0, _))            => sourceDir / "scala-2.13+"
         case _                       => sourceDir / "scala-2.13-"
       }
     },
@@ -35,18 +36,14 @@ lazy val root = project.in(file("."))
 lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
-  scalaVersion       := "2.12.8",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0"),
+  scalaVersion       := "0.27.0-RC1", // "2.13.3",
+  crossScalaVersions := Seq("0.27.0-RC1", "2.13.3", "2.12.12"),
   description        := "A dynamic directed acyclic graph library",
   homepage           := Some(url(s"https://git.iem.at/sciss/${name.value}")),
   licenses           := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   libraryDependencies += {
-    if (scalaVersion.value == "2.13.0") {
-      "org.scalatest" % "scalatest_2.13.0-RC3" % deps.test.scalaTest % Test
-    } else {
-      "org.scalatest" %% "scalatest" % deps.test.scalaTest % Test
-    }
+    "org.scalatest" %% "scalatest" % deps.test.scalaTest % Test
   }
 )
 
