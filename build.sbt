@@ -10,20 +10,26 @@ lazy val deps = new {
   }
 }
 
-lazy val root = project.in(file("."))
+lazy val root = crossProject(JSPlatform, JVMPlatform).in(file("."))
   .settings(commonSettings)
+  .jvmSettings(commonJvmSettings)
   .settings(publishSettings)
   .settings(
     name := baseName,
     // Adds a `src/main/scala-2.13+` source directory for Scala 2.13 and newer
     // and  a `src/main/scala-2.13-` source directory for Scala version older than 2.13
-    unmanagedSourceDirectories in Compile += {
-      val sourceDir = (sourceDirectory in Compile).value
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, n)) if n >= 13 => sourceDir / "scala-2.13+"
-        case Some((0, _))            => sourceDir / "scala-2.13+"
-        case _                       => sourceDir / "scala-2.13-"
+    unmanagedSourceDirectories in Compile ++= {
+      val sourceDirPl = (sourceDirectory in Compile).value
+      val sourceDirSh = file(
+        sourceDirPl.getPath.replace("/jvm/" , "/shared/").replace("/js/", "/shared/")
+      )
+      val sv = CrossVersion.partialVersion(scalaVersion.value)
+      val sub = sv match {
+        case Some((2, n)) if n >= 13 => "scala-2.13+"
+        case Some((0, _))            => "scala-2.13+"
+        case _                       => "scala-2.13-"
       }
+      Seq(sourceDirPl / sub, sourceDirSh / sub)
     },
     // ---- console ----
     initialCommands in console :=
@@ -33,17 +39,20 @@ lazy val root = project.in(file("."))
     mimaPreviousArtifacts := Set("de.sciss" %% baseNameL % mimaVersion)
   )
 
+lazy val commonJvmSettings = Seq(
+  crossScalaVersions := Seq("0.27.0-RC1", "2.13.3", "2.12.12"),
+)
+
 lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
-  scalaVersion       := "0.27.0-RC1", // "2.13.3",
-  crossScalaVersions := Seq("0.27.0-RC1", "2.13.3", "2.12.12"),
+  scalaVersion       := "2.13.3",
   description        := "A dynamic directed acyclic graph library",
   homepage           := Some(url(s"https://git.iem.at/sciss/${name.value}")),
   licenses           := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   libraryDependencies += {
-    "org.scalatest" %% "scalatest" % deps.test.scalaTest % Test
+    "org.scalatest" %%% "scalatest" % deps.test.scalaTest % Test
   }
 )
 

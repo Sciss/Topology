@@ -8,11 +8,12 @@
 Topology is a library for the Scala programming language that provides data structures and algorithms for
 graphs. It is (C)opyright 2010&ndash;2020 by Hanns Holger Rutz. All rights reserved.  This project is released under 
 the [GNU Lesser General Public License](https://git.iem.at/sciss/Topology/raw/main/LICENSE) v2.1+ 
-and comes with absolutely no warranties. To contact the author, send an e-mail to `contact at sciss.de`
+and comes with absolutely no warranties. To contact the author, send an e-mail to `contact at sciss.de`.
 
 ## building
 
-This project builds with sbt against Scala 2.13, 2.12. The last version to support Scala 2.11 was v1.1.2.
+This project builds with sbt against Scala 2.13, 2.12, Dotty (JVM) and Scala 2.13 (JS).
+The last version to support Scala 2.11 was v1.1.2.
 
 ## linking
 
