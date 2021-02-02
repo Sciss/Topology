@@ -1,12 +1,12 @@
 # Topology
 
-[![Build Status](https://travis-ci.org/Sciss/Topology.svg?branch=main)](https://travis-ci.org/Sciss/Topology)
+[![Build Status](https://github.com/Sciss/Topology/workflows/Scala%20CI/badge.svg?branch=main)](https://github.com/Sciss/Topology/actions?query=workflow%3A%22Scala+CI%22)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/topology_2.13)
 
 ## statement
 
 Topology is a library for the Scala programming language that provides data structures and algorithms for
-graphs. It is (C)opyright 2010&ndash;2020 by Hanns Holger Rutz. All rights reserved.  This project is released under 
+graphs. It is (C)opyright 2010&ndash;2021 by Hanns Holger Rutz. All rights reserved.  This project is released under 
 the [GNU Lesser General Public License](https://git.iem.at/sciss/Topology/raw/main/LICENSE) v2.1+ 
 and comes with absolutely no warranties. To contact the author, send an e-mail to `contact at sciss.de`.
 
