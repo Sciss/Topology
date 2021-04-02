@@ -6,7 +6,7 @@ lazy val mimaVersion      = "1.1.0"
 
 lazy val deps = new {
   val test = new {
-    val scalaTest = "3.2.4"
+    val scalaTest = "3.2.7"
   }
 }
 
@@ -44,13 +44,13 @@ lazy val root = crossProject(JSPlatform, JVMPlatform).in(file("."))
   )
 
 lazy val commonJvmSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-RC1", "2.13.4", "2.12.13"),
+  crossScalaVersions := Seq("3.0.0-RC2", "2.13.5", "2.12.13"),
 )
 
 lazy val commonSettings = Seq(
 //  version            := projectVersion,
 //  organization       := "de.sciss",
-  scalaVersion       := "2.13.4",
+  scalaVersion       := "2.13.5",
   description        := "A dynamic directed acyclic graph library",
   homepage           := Some(url(s"https://git.iem.at/sciss/${name.value}")),
   licenses           := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
