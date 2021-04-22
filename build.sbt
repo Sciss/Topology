@@ -6,7 +6,7 @@ lazy val mimaVersion      = "1.1.0"
 
 lazy val deps = new {
   val test = new {
-    val scalaTest = "3.2.7"
+    val scalaTest = "3.2.8"
   }
 }
 
@@ -44,7 +44,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform).in(file("."))
   )
 
 lazy val commonJvmSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-RC2", "2.13.5", "2.12.13"),
+  crossScalaVersions := Seq("3.0.0-RC3", "2.13.5", "2.12.13"),
 )
 
 lazy val commonSettings = Seq(
